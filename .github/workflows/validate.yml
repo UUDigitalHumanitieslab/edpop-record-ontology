@@ -10,6 +10,6 @@ jobs:
         run: |
           sudo add-apt-repository universe
           sudo apt-get update
-          sudo apt-get -y install apache-jena
+          sudo apt-get -y install libapache-jena-java
       - name: Validate Turtle file
         run: turtle edpop-record-ontology.ttl
