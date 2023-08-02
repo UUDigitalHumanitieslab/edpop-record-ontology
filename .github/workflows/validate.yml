@@ -6,14 +6,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install jena
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install Python dependencies
         run: |
-          sudo add-apt-repository universe
-          sudo apt-get update
-          sudo apt-get -y install libapache-jena-java
+          python -m pip install --upgrade pip
+          pip install -r tests/requirements.txt
       - name: Validate Turtle file
         run: |
-          for name in /usr/share/java/jena-* ; do
-            CP=$CP:$name
-          done
-          java -cp $CP riotcmd.turtle edpop-record-ontology.ttl
+          python tests/validate_ontology.py
