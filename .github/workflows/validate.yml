@@ -12,4 +12,8 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install libapache-jena-java
       - name: Validate Turtle file
-        run: java -cp "/usr/share/java/*" riotcmd.turtle edpop-record-ontology.ttl
+        run: |
+          for name in /usr/share/java/jena-* ; do
+            CP=$CP:$name
+          done
+          java -cp $CP riotcmd.turtle edpop-record-ontology.ttl
