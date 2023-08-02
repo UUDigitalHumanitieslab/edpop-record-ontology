@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/latest/> .
+
+edpoprec: a owl:Ontology ;
+          dcterms:license <https://creativecommons.org/licenses/by/3.0/> .
+
+edpoprec:Catalog a rdfs:Class ;
+                 skos:prefLabel "Catalog"@en ;
+                 skos:description "External repository of bibliographical or biographical data" .
+
+edpoprec:BibliographicalCatalog rdfs:subClassOf edpoprec:Catalog .
+edpoprec:BiographicalCatalog rdfs:subClassOf edpoprec:Catalog .
+
+edpoprec:Record a rdfs:Class ;
+                skos:prefLabel "Record"@en ;
+                skos:description "Bibliographical or biographical record" .
+
+edpoprec:BibliographicalRecord rdfs:subClassOf edpoprec:Record .
+edpoprec:BiographicalRecord rdfs:subClassOf edpoprec:Record .
+
+edpoprec:fromCatalog a rdf:Property ;
+                     rdfs:domain edpoprec:Record ;
+                     rdfs:range edpoprec:Catalog .
