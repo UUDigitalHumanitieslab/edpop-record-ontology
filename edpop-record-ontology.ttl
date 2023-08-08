@@ -4,10 +4,14 @@
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/latest/> .
 
 edpoprec: a owl:Ontology ;
           dcterms:license <https://creativecommons.org/licenses/by/3.0/> .
+
+
+### CATALOG CLASSES
 
 edpoprec:Catalog a rdfs:Class ;
                  skos:prefLabel "Catalog"@en ;
@@ -16,13 +20,121 @@ edpoprec:Catalog a rdfs:Class ;
 edpoprec:BibliographicalCatalog rdfs:subClassOf edpoprec:Catalog .
 edpoprec:BiographicalCatalog rdfs:subClassOf edpoprec:Catalog .
 
+
+### RECORD CLASSES
+
+# I have been thinking if we should indeed call these classes "records", or rather something
+# like "Book" or "Person". But I think it is best if we think of them as representing
+# records (i.e., they represent the original records from the catalogues we take them from)
+# rather than that they represent the objects these records describe.
+
 edpoprec:Record a rdfs:Class ;
                 skos:prefLabel "Record"@en ;
                 skos:description "Bibliographical or biographical record" .
 
-edpoprec:BibliographicalRecord rdfs:subClassOf edpoprec:Record .
+edpoprec:BibliographicalRecord rdfs:subClassOf edpoprec:Record ;
+		rdfs:subClassOf
+		  [ a owl:Restriction ;
+		    owl:onProperty edpoprec:title ;
+		    owl:maxCardinality 1
+		  ] .
+
 edpoprec:BiographicalRecord rdfs:subClassOf edpoprec:Record .
 
+
+### COMMON PROPERTIES FOR ALL RECORDS
+
 edpoprec:fromCatalog a rdf:Property ;
+                     skos:prefLabel "From catalog"@en ;
+                     skos:description "The catalog this record was originally taken from" ;
                      rdfs:domain edpoprec:Record ;
                      rdfs:range edpoprec:Catalog .
+
+edpoprec:identifier a rdf:Property ;
+                    skos:prefLabel "Identifier"@en ;
+                    skos:description "Unique identifier used by the source catalog" ;
+                    rdfs:domain edpoprec:Record ;
+                    rdfs:range edpoprec:Catalog .
+
+edpoprec:publicURL a rdf:Property ;
+                   skos:prefLabel "Public URL"@en ;
+                   skos:description "Public URL in the source catalog" ;
+                   rdfs:domain edpoprec:Record ;
+                   rdfs:range edpoprec:Catalog .
+
+# Original data: supposed to contain a blank record with all (relevant) original data,
+# rudimentally converted into RDF, so that it will be possible to show this data in the VRE.
+edpoprec:originalData a rdf:Property ;
+                      skos:prefLabel "Original data"@en ;
+		      skos:description "All data from the original catalogue record" ;
+		      rdfs:domain edpoprec:Record .
+
+### PROPERTIES SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
+
+# So far we only define string literals as ranges for these properties, but we could think
+# of also allowing other classes, like our own biographical records for authors.
+
+# The string literals are meant to be the best effort of EDPOP Explorer to give a 
+# somehow normalized, human-readable representation of the property, but they are not
+# thesaurized and certainly not guaranteed to be the same if they are conceptually the same
+# (e.g., Köln or Keulen for the city of Cologne).
+
+# My proposal would be to use these properties that can be extracted from the original record
+# in a deterministic way. That means: only string literals, and also links to other records
+# if they are defined in the original catalogues (such as links to CT Thesaurus).
+# Users will be able to enrich, correct and further normalize this data with annotations.
+# Annotations may also be used, perhaps, for automatic non-deterministic normalizations,
+# such as the place of publication as a link to Wikidata.
+
+edpoprec:title a rdf:property ;
+               skos:prefLabel "Title"@en ;
+               rdfs:domain edpoprec:BibliographicalRecord ;
+               rdfs:range xsd:string .
+
+edpoprec:alternativeTitle a rdf:property ;
+                            skos:prefLabel "Alternative title"@en ;
+                            rdfs:domain edpoprec:BibliographicalRecord ;
+                            rdfs:range xsd:string .
+
+# Or: contributor? And how to define the role of the contributor? Perhaps a separate
+# class is better. The catalogues generally describe the roles of the contributors quite
+# well (author, translator, illustrator, etc.)
+edpoprec:author a rdf:property ;
+                skos:prefLabel "Author"@en ;
+		rdfs:domain edpoprec:BibliographicalRecord ;
+		rdfs:range xsd:string .
+
+edpoprec:publisherOrPrinter a rdf:property ;
+                            skos:prefLabel "Publisher or printer"@en ;
+			    rdfs:domain edpoprec:BibliographicalRecord ;
+			    rdfs:range xsd:string .
+
+edpoprec:placeOfPublication a rdf:property ;
+                            skos:prefLabel "Place of publication"@en ;
+			    rdfs:domain edpoprec:BibliographicalRecord ;
+			    rdfs:range xsd:string .
+
+# Dating has xsd:string as its range, because the date is very often not a simple year
+# in the catalogues but can be anything, like [1650] for an estimation or a range like
+# 1800-1914.
+edpoprec:dating a rdf:property ;
+                skos:prefLabel "Dating"@en ;
+		rdfs:domain edpoprec:BibliographicalRecord ;
+		rdfs:range xsd:string .
+
+# For language, not sure which class to use. There are various IRI collections, of which
+# ISO 639-3 (e.g. https://iso639-3.sil.org/code/nld) and Glottolog
+# (e.g. https://glottolog.org/resource/languoid/id/mode1257) seem most attractive,
+# or perhaps Wikidata. Or just the ISO 639-3 code as a literal?
+edpoprec:language a rdf:property ;
+                  skos:prefLabel "Language"@en ;
+		  rdfs:domain edpoprec:BibliographicalRecord .
+
+edpoprec:format a rdf:property ;
+                skos:prefLabel "Format"@en ;
+		skos:description "Format or physical description" ;
+		rdfs:domain edpoprec:BibliographicalRecord ;
+		rdfs:range xsd:string .
+
+# Leaving out for now: genre (a lot of variation across catalogues, but should nevertheless
+# quickly be visible for VRE users), illustrations (same problem) and notes/description.
