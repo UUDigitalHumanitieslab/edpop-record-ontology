@@ -5,11 +5,9 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/latest/> .
+@prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/0.1.0-SNAPSHOT/> .
 
-edpoprec: a owl:Ontology ;
-          dcterms:license <https://creativecommons.org/licenses/by/3.0/> .
-
+edpoprec: a owl:Ontology .
 
 ### CATALOG CLASSES
 
@@ -17,27 +15,24 @@ edpoprec:Catalog a rdfs:Class ;
                  skos:prefLabel "Catalog"@en ;
                  skos:description "External repository of bibliographical or biographical data" .
 
-edpoprec:BibliographicalCatalog rdfs:subClassOf edpoprec:Catalog .
-edpoprec:BiographicalCatalog rdfs:subClassOf edpoprec:Catalog .
+edpoprec:BibliographicalCatalog rdfs:subClassOf edpoprec:Catalog ;
+                                skos:prefLabel "Bibliographical catalog"@en ;
+                                skos:description "External repository of bibliographical data" .
+edpoprec:BiographicalCatalog rdfs:subClassOf edpoprec:Catalog ;
+                             skos:preflabel "Biographical catalog"@en ;
+                             skos:description "External repository of biographical data" .
 
 
 ### RECORD CLASSES
 
-# I have been thinking if we should indeed call these classes "records", or rather something
-# like "Book" or "Person". But I think it is best if we think of them as representing
-# records (i.e., they represent the original records from the catalogues we take them from)
-# rather than that they represent the objects these records describe.
+# The Record class and its derivatives are seen as describing records,
+# rather than directly describing the things that these records represent.
 
 edpoprec:Record a rdfs:Class ;
                 skos:prefLabel "Record"@en ;
                 skos:description "Bibliographical or biographical record" .
 
-edpoprec:BibliographicalRecord rdfs:subClassOf edpoprec:Record ;
-		rdfs:subClassOf
-		  [ a owl:Restriction ;
-		    owl:onProperty edpoprec:title ;
-		    owl:maxCardinality 1
-		  ] .
+edpoprec:BibliographicalRecord rdfs:subClassOf edpoprec:Record .
 
 edpoprec:BiographicalRecord rdfs:subClassOf edpoprec:Record .
 
@@ -53,88 +48,167 @@ edpoprec:fromCatalog a rdf:Property ;
 edpoprec:identifier a rdf:Property ;
                     skos:prefLabel "Identifier"@en ;
                     skos:description "Unique identifier used by the source catalog" ;
-                    rdfs:domain edpoprec:Record ;
-                    rdfs:range edpoprec:Catalog .
+                    rdfs:domain edpoprec:Record .
 
 edpoprec:publicURL a rdf:Property ;
                    skos:prefLabel "Public URL"@en ;
                    skos:description "Public URL in the source catalog" ;
                    rdfs:domain edpoprec:Record ;
-                   rdfs:range edpoprec:Catalog .
+                   rdfs:range xsd:anyURI .
 
-# Original data: supposed to contain a blank record with all (relevant) original data,
-# rudimentally converted into RDF, so that it will be possible to show this data in the VRE.
+# Original data: supposed to contain JSON with all (relevant) original data
+# rudimentally converted into JSON, so that it will be possible to show this data in the VRE.
 edpoprec:originalData a rdf:Property ;
                       skos:prefLabel "Original data"@en ;
-		      skos:description "All data from the original catalogue record" ;
-		      rdfs:domain edpoprec:Record .
+		              skos:description "All data from the original catalogue record in JSON format" ;
+		              rdfs:domain edpoprec:Record ;
+                      rdfs:range rdf:JSON .
 
-### PROPERTIES SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
 
-# So far we only define string literals as ranges for these properties, but we could think
-# of also allowing other classes, like our own biographical records for authors.
+### THE FIELD CLASS
 
-# The string literals are meant to be the best effort of EDPOP Explorer to give a 
-# somehow normalized, human-readable representation of the property, but they are not
-# thesaurized and certainly not guaranteed to be the same if they are conceptually the same
-# (e.g., Köln or Keulen for the city of Cologne).
+# A Field represents a piece of information from a catalogue record. In its basic form
+# the field contains the original inforation from the catalogue and if applicable
+# also a normalized version as a string literal.
+# EDPOP VRE note: Fields are supposed to be able to be annotated in the EDPOP VRE.
 
-# My proposal would be to use these properties that can be extracted from the original record
-# in a deterministic way. That means: only string literals, and also links to other records
-# if they are defined in the original catalogues (such as links to CT Thesaurus).
-# Users will be able to enrich, correct and further normalize this data with annotations.
-# Annotations may also be used, perhaps, for automatic non-deterministic normalizations,
-# such as the place of publication as a link to Wikidata.
+edpoprec:Field a rdf:Class ;
+               skos:prefLabel "Field"@en ;
+               skos:description "A catalog field" .
+
+# originalText contains the text as it literally comes from the original database.
+# As we require this to be a string literal, there may be cases where the 
+# string has to be slightly adapted first (such as in case of a title field, where 
+# the original database has the title split out in title and subtitle).
+edpoprec:originalText a rdf:property ;
+                      skos:prefLabel "Original text"@en ;
+                      rdfs:domain edpoprec:Field ;
+                      rdfs:range xsd:string .
+
+# originalText is required and should appear only once:
+edpoprec:Field rdfs:subClassOf [
+    a owl:Restriction ;
+      owl:onProperty edpoprec:originalText ;
+      owl:cardinality 1
+] .
+
+# normalizedText is a human-readable string representation of a normalization.
+# In most cases the normalization will be more complex than just a string, but 
+# normalizedText provides a fallback if a simple way of rendering is needed in 
+# a user interface. normalizedText is optional.
+edpoprec:normalizedText a rdf:property ;
+                        skos:prefLabel "Normalized text"@en ;
+                        rdfs:domain edpoprec:Field ;
+                        rdfs:range xsd:string .
+
+# unknown: true if the record explicitly mentions that this information is 
+# not known
+edpoprec:unknown a rdf:property ;
+                   skos:prefLabel "Unknown"@en ;
+                   rdfs:domain edpoprec:Field ;
+                   rdfs:range xsd:boolean .
+
+# (We may also want to add some sort of a confidence property, to indicate 
+# the chance that a normalization is correct.)
+
+# (A possible addition would be a property that indicates the part of the original 
+# record from which the information was taken.)
+
+
+### FIELD SUBCLASSES
+
+edpoprec:ContributorField rdfs:subClassOf edpoprec:Field ;
+                          skos:prefLabel "Contributor field"@en .
+
+# relation: should be one of the LoC relators or compatible. We may want to 
+# add another property with the original, non-normalized data.
+edpoprec:relation a rdf:property ;
+                  skos:prefLabel "Relation"@en ;
+                  skos:description "Role of the contributor (normalized)" ;
+                  rdfs:domain edpoprec:ContributorField .
+
+# authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
+# This information is sometimes available on the record.
+edpoprec:authorityRecord a rdf:property ;
+                         skos:prefLabel "Authority record"@en ;
+                         skos:description "Link to an authority record as given in the record" .
+
+edpoprec:DatingField rdfs:subClassOf edpoprec:Field ;
+                     skos:prefLabel "Dating field"@en .
+
+edpoprec:edtfDate a rdf:property ;
+                    skos:prefLabel "EDTF date"@en ;
+                    skos:description "Normalized date in Extended Date/Time Format" ;
+                    rdfs:domain edpoprec:DatingField ;
+                    rdfs:range <http://id.loc.gov/datatypes/edtf/EDTF> .
+
+edpoprec:LanguageField rdfs:subClassOf edpoprec:Field ;
+                       skos:prefLabel "Language"@en .
+
+edpoprec:languageCode a rdf:property ;
+                        skos:prefLabel "Language code"@en ;
+                        skos:description "Three-character language code according to ISO 639-3" .
+
+
+### FIELDS SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
 
 edpoprec:title a rdf:property ;
                skos:prefLabel "Title"@en ;
                rdfs:domain edpoprec:BibliographicalRecord ;
-               rdfs:range xsd:string .
+               rdfs:range edpoprec:Field .
+
+edpoprec:bibliographicalRecord rdfs:subClassOf [
+    a owl:Restriction ;
+    owl:onProperty edpoprec:title ;
+    owl:maxCardinality 1
+] .
 
 edpoprec:alternativeTitle a rdf:property ;
                             skos:prefLabel "Alternative title"@en ;
                             rdfs:domain edpoprec:BibliographicalRecord ;
-                            rdfs:range xsd:string .
+                            rdfs:range edpoprec:Field .
 
-# Or: contributor? And how to define the role of the contributor? Perhaps a separate
-# class is better. The catalogues generally describe the roles of the contributors quite
-# well (author, translator, illustrator, etc.)
-edpoprec:author a rdf:property ;
-                skos:prefLabel "Author"@en ;
-		rdfs:domain edpoprec:BibliographicalRecord ;
-		rdfs:range xsd:string .
+edpoprec:contributor a rdf:property ;
+                     skos:prefLabel "Contributor"@en ;
+                     skos:description "Author or other contributor to the work" ;
+                     rdfs:domain edpoprec:BibliographicalRecord ;
+                     rdfs:range edpoprec:ContributorField .
 
 edpoprec:publisherOrPrinter a rdf:property ;
                             skos:prefLabel "Publisher or printer"@en ;
-			    rdfs:domain edpoprec:BibliographicalRecord ;
-			    rdfs:range xsd:string .
+			                rdfs:domain edpoprec:BibliographicalRecord ;
+			                rdfs:range xsd:string .
 
 edpoprec:placeOfPublication a rdf:property ;
                             skos:prefLabel "Place of publication"@en ;
-			    rdfs:domain edpoprec:BibliographicalRecord ;
-			    rdfs:range xsd:string .
+			                rdfs:domain edpoprec:BibliographicalRecord ;
+			                rdfs:range xsd:string .
 
-# Dating has xsd:string as its range, because the date is very often not a simple year
-# in the catalogues but can be anything, like [1650] for an estimation or a range like
-# 1800-1914.
 edpoprec:dating a rdf:property ;
                 skos:prefLabel "Dating"@en ;
-		rdfs:domain edpoprec:BibliographicalRecord ;
-		rdfs:range xsd:string .
+		        rdfs:domain edpoprec:BibliographicalRecord ;
+		        rdfs:range edpoprec:DatingField .
 
-# For language, not sure which class to use. There are various IRI collections, of which
-# ISO 639-3 (e.g. https://iso639-3.sil.org/code/nld) and Glottolog
-# (e.g. https://glottolog.org/resource/languoid/id/mode1257) seem most attractive,
-# or perhaps Wikidata. Or just the ISO 639-3 code as a literal?
 edpoprec:language a rdf:property ;
                   skos:prefLabel "Language"@en ;
-		  rdfs:domain edpoprec:BibliographicalRecord .
+        		  rdfs:domain edpoprec:BibliographicalRecord ;
+                  rdfs:range edpoprec:LanguageField .
 
-edpoprec:format a rdf:property ;
-                skos:prefLabel "Format"@en ;
-		skos:description "Format or physical description" ;
-		rdfs:domain edpoprec:BibliographicalRecord ;
-		rdfs:range xsd:string .
+edpoprec:extent a rdf:property ;
+                skos:prefLabel "Extent"@en ;
+                skos:description "Number of pages or other way of measuring length" ;
+        		rdfs:domain edpoprec:BibliographicalRecord ;
+        		rdfs:range edpoprec:Field .
 
-# Leaving out for now: genre (a lot of variation across catalogues, but should nevertheless
-# quickly be visible for VRE users), illustrations (same problem) and notes/description.
+edpoprec:size a rdf:property ;
+              skos:prefLabel "Dimensions"@en ;
+              skos:description "Length in centimeters or other way of measuring size" ;
+        	  rdfs:domain edpoprec:BibliographicalRecord ;
+           	  rdfs:range edpoprec:Field .
+
+edpoprec:physicalDescription a rdf:property ;
+                             skos:prefLabel "Physical description"@en ;
+                             skos:description "Comments about the physical appearance of the described item" ;
+                             rdfs:domain edpoprec:BibliographicalRecord ;
+                             rdfs:range edpoprec:Field .
+
