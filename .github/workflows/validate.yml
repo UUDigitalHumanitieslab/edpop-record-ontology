@@ -1,4 +1,4 @@
-name: Validate Turtle file
+name: Run tests
 on: [push]
 jobs:
   validate:
@@ -16,4 +16,4 @@ jobs:
           pip install -r tests/requirements.txt
       - name: Validate Turtle file
         run: |
-          python tests/validate_ontology.py
+          python -m pytest tests
