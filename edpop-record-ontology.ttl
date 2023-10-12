@@ -108,6 +108,13 @@ edpoprec:unknown a rdf:property ;
                    rdfs:domain edpoprec:Field ;
                    rdfs:range xsd:boolean .
 
+# authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
+# This information is sometimes available on the record.
+edpoprec:authorityRecord a rdf:property ;
+                         skos:prefLabel "Authority record"@en ;
+                         skos:description "Link to an authority record as given in the record" ;
+                         rdfs:domain edpoprec:Field .
+
 # (We may also want to add some sort of a confidence property, to indicate 
 # the chance that a normalization is correct.)
 
@@ -126,12 +133,6 @@ edpoprec:relation a rdf:property ;
                   skos:prefLabel "Relation"@en ;
                   skos:description "Role of the contributor (normalized)" ;
                   rdfs:domain edpoprec:ContributorField .
-
-# authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
-# This information is sometimes available on the record.
-edpoprec:authorityRecord a rdf:property ;
-                         skos:prefLabel "Authority record"@en ;
-                         skos:description "Link to an authority record as given in the record" .
 
 edpoprec:DatingField rdfs:subClassOf edpoprec:Field ;
                      skos:prefLabel "Dating field"@en .
