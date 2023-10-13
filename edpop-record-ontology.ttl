@@ -148,9 +148,12 @@ edpoprec:LanguageField rdfs:subClassOf edpoprec:Field ;
 edpoprec:languageCode a rdf:property ;
                         skos:prefLabel "Language code"@en ;
                         skos:description "Three-character language code according to ISO 639-3" .
+			rdfs:domain edpoprec:LanguageField ;
+			rdfs:range xsd:string .
 
 edpoprec:PlaceField rdfs:subClassOf edpoprec:Field ;
-                    skos:prefLabel "Place field"@en .
+                    skos:prefLabel "Place field"@en ;
+		    skos:description "A place of residence, such as a city or town" .
 
 ### FIELDS SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
 
@@ -229,4 +232,24 @@ edpoprec:variantName a rdf:property ;
 edpoprec:placeOfBirth a rdf:property ;
               skos:prefLabel "Place of birth"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
-              rdfs:range edpoprec:Field .
+              rdfs:range edpoprec:PlaceField .
+
+edpoprec:placeOfDeath a rdf:property ;
+              skos:prefLabel "Place of death"@en ;
+	      rdfs:domain edpoprec:BiographicalRecord ;
+	      rdfs:range edpoprec:PlaceField .
+
+edpoprec:placeOfActivity a rdf:property ;
+              skos:prefLabel "Place of activity"@en ;
+	      rdfs:domain edpoprec:BiographicalRecord ;
+	      rdfs:range edpoprec:PlaceField .
+
+edpoprec:dateOfBirth a rdf:property ;
+              skos:prefLabel "Date of birth"@en ;
+	      rdfs:domain edpoprec:BiographicalRecord ;
+	      rdfs:range edpoprec:DatingField .
+
+edpoprec:dateOfDeath a rdf:property ;
+              skos:prefLabel "Date of death"@en ;
+	      rdfs:domain edpoprec:BiographicalRecord ;
+	      rdfs:range edpoprec:DatingField .
