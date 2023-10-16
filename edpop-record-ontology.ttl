@@ -254,3 +254,9 @@ edpoprec:dateOfDeath a rdf:property ;
               skos:prefLabel "Date of death"@en ;
 	      rdfs:domain edpoprec:BiographicalRecord ;
 	      rdfs:range edpoprec:DatingField .
+          
+edpoprec:activity a rdf:property ;
+                  skos:prefLabel "Activity"@en ;
+                  skos:description "An activity that the entity is known for" ;
+                  rdfs:domain edpoprec:BiographicalRecord ;
+                  rdfs:range edpoprec:Field .
