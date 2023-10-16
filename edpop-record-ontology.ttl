@@ -148,7 +148,7 @@ edpoprec:LanguageField rdfs:subClassOf edpoprec:Field ;
 
 edpoprec:languageCode a rdf:property ;
                         skos:prefLabel "Language code"@en ;
-                        skos:description "Three-character language code according to ISO 639-3" .
+                        skos:description "Three-character language code according to ISO 639-3" ;
 			rdfs:domain edpoprec:LanguageField ;
 			rdfs:range xsd:string .
 
