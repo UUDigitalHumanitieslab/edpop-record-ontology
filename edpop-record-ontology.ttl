@@ -108,6 +108,13 @@ edpoprec:unknown a rdf:property ;
                    rdfs:domain edpoprec:Field ;
                    rdfs:range xsd:boolean .
 
+# authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
+# This information is sometimes available on the record.
+edpoprec:authorityRecord a rdf:property ;
+                         skos:prefLabel "Authority record"@en ;
+                         skos:description "Link to an authority record as given in the record" ;
+                         rdfs:domain edpoprec:Field .
+
 # (We may also want to add some sort of a confidence property, to indicate 
 # the chance that a normalization is correct.)
 
@@ -127,12 +134,6 @@ edpoprec:relation a rdf:property ;
                   skos:description "Role of the contributor (normalized)" ;
                   rdfs:domain edpoprec:ContributorField .
 
-# authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
-# This information is sometimes available on the record.
-edpoprec:authorityRecord a rdf:property ;
-                         skos:prefLabel "Authority record"@en ;
-                         skos:description "Link to an authority record as given in the record" .
-
 edpoprec:DatingField rdfs:subClassOf edpoprec:Field ;
                      skos:prefLabel "Dating field"@en .
 
@@ -147,8 +148,23 @@ edpoprec:LanguageField rdfs:subClassOf edpoprec:Field ;
 
 edpoprec:languageCode a rdf:property ;
                         skos:prefLabel "Language code"@en ;
-                        skos:description "Three-character language code according to ISO 639-3" .
+                        skos:description "Three-character language code according to ISO 639-3" ;
+                        rdfs:domain edpoprec:LanguageField ;
+                        rdfs:range xsd:string .
 
+edpoprec:LocationField rdfs:subClassOf edpoprec:Field ;
+                      skos:prefLabel "Location field"@en ;
+                      skos:description "A location, such as a town, country or region" .
+
+edpoprec:LocationType a rdf:class ;
+                      skos:prefLabel "Location type"@en .
+
+edpoprec:locality a edpoprec:LocationType ;
+                  skos:prefLabel "Locality"@en ;
+                  skos:description "A place of residence such as a village, town or city" .
+
+edpoprec:country a edpoprec:LocationType ;
+                 skos:prefLabel "Country"@en .
 
 ### FIELDS SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
 
@@ -177,12 +193,12 @@ edpoprec:contributor a rdf:property ;
 edpoprec:publisherOrPrinter a rdf:property ;
                             skos:prefLabel "Publisher or printer"@en ;
 			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range xsd:string .
+			                rdfs:range edpoprec:LocationField .
 
 edpoprec:placeOfPublication a rdf:property ;
                             skos:prefLabel "Place of publication"@en ;
 			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range xsd:string .
+			                rdfs:range edpoprec:LocationField .
 
 edpoprec:dating a rdf:property ;
                 skos:prefLabel "Dating"@en ;
@@ -212,3 +228,41 @@ edpoprec:physicalDescription a rdf:property ;
                              rdfs:domain edpoprec:BibliographicalRecord ;
                              rdfs:range edpoprec:Field .
 
+### FIELDS SPECIFIC FOR BIOGRAPHICAL RECORDS
+
+edpoprec:name a rdf:property ;
+              skos:prefLabel "Name"@en ;
+              rdfs:domain edpoprec:BiographicalRecord ;
+              rdfs:range edpoprec:Field .
+
+edpoprec:variantName a rdf:property ;
+              skos:prefLabel "Name"@en ;
+              rdfs:domain edpoprec:BiographicalRecord ;
+              rdfs:range edpoprec:Field .
+
+edpoprec:placeOfBirth a rdf:property ;
+              skos:prefLabel "Place of birth"@en ;
+              rdfs:domain edpoprec:BiographicalRecord ;
+              rdfs:range edpoprec:LocationField .
+
+edpoprec:placeOfDeath a rdf:property ;
+              skos:prefLabel "Place of death"@en ;
+              rdfs:domain edpoprec:BiographicalRecord ;
+              rdfs:range edpoprec:LocationField .
+
+edpoprec:placeOfActivity a rdf:property ;
+              skos:prefLabel "Place of activity"@en ;
+              rdfs:domain edpoprec:BiographicalRecord ;
+              rdfs:range edpoprec:LocationField .
+
+edpoprec:timespan a rdf:property ;
+                  skos:prefLabel "Timespan"@en ;
+                  skos:description "The years that the person was alive or the entity was existing" ;
+                  rdfs:domain edpoprec:BiographicalRecord ;
+                  rdfs:range edpoprec:DatingField .
+          
+edpoprec:activity a rdf:property ;
+                  skos:prefLabel "Activity"@en ;
+                  skos:description "An activity that the entity is known for" ;
+                  rdfs:domain edpoprec:BiographicalRecord ;
+                  rdfs:range edpoprec:Field .
