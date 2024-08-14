@@ -5,7 +5,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/0.1.0-SNAPSHOT/> .
+@prefix edpoprec: <https://dhstatic.hum.uu.nl/edpop-records/0.1.0/> .
 
 edpoprec: a owl:Ontology .
 
