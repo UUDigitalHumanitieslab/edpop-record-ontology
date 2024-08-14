@@ -13,7 +13,7 @@ context = {
     "dcterms": "http://purl.org/dc/terms/",
     "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-    "edpoprec": "https://dhstatic.hum.uu.nl/edpop-records/0.1.0-SNAPSHOT/",
+    "edpoprec": "https://dhstatic.hum.uu.nl/edpop-records/0.1.0/",
 }
 
 
