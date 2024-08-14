@@ -17,4 +17,4 @@ jobs:
           pip install -r tests/requirements.txt
       - name: Validate Turtle file
         run: |
-          python -m pytest tests
+          python -m pytest utils
