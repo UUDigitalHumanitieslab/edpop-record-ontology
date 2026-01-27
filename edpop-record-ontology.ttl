@@ -22,6 +22,18 @@ edpoprec:BiographicalCatalog rdfs:subClassOf edpoprec:Catalog ;
                              skos:preflabel "Biographical catalog"@en ;
                              skos:description "External repository of biographical data" .
 
+edpoprec:maximumRecordsPerPage a rdf:Property ;
+                               skos:prefLabel "Maximum records per page"@en ;
+                               skos:description "The maximum records a reader can fetch at once" ;
+                               rdfs:domain edpoprec:Catalog ;
+                               rdfs:range xsd:integer .
+
+edpoprec:allowEmptyQuery a rdf:Property ;
+                         skos:prefLabel "Allow empty query"@en ;
+                         skos:description "Whether a reader accept an empty query string" ;
+                         rdfs:domain edpoprec:Catalog ;
+                         rdfs:range xsd:boolean .
+
 
 ### RECORD CLASSES
 
