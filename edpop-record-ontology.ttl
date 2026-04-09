@@ -72,8 +72,8 @@ edpoprec:publicURL a rdf:Property ;
 # rudimentally converted into JSON, so that it will be possible to show this data in the VRE.
 edpoprec:originalData a rdf:Property ;
                       skos:prefLabel "Original data"@en ;
-		              skos:description "All data from the original catalogue record in JSON format" ;
-		              rdfs:domain edpoprec:Record ;
+                      skos:description "All data from the original catalogue record in JSON format" ;
+                      rdfs:domain edpoprec:Record ;
                       rdfs:range rdf:JSON .
 
 
@@ -198,35 +198,35 @@ edpoprec:contributor a rdf:Property ;
 
 edpoprec:publisherOrPrinter a rdf:Property ;
                             skos:prefLabel "Publisher or printer"@en ;
-			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range edpoprec:LocationField .
+                            rdfs:domain edpoprec:BibliographicalRecord ;
+                            rdfs:range edpoprec:LocationField .
 
 edpoprec:placeOfPublication a rdf:Property ;
                             skos:prefLabel "Place of publication"@en ;
-			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range edpoprec:LocationField .
+                            rdfs:domain edpoprec:BibliographicalRecord ;
+                            rdfs:range edpoprec:LocationField .
 
 edpoprec:dating a rdf:Property ;
                 skos:prefLabel "Dating"@en ;
-		        rdfs:domain edpoprec:BibliographicalRecord ;
-		        rdfs:range edpoprec:DatingField .
+                rdfs:domain edpoprec:BibliographicalRecord ;
+                rdfs:range edpoprec:DatingField .
 
 edpoprec:language a rdf:Property ;
                   skos:prefLabel "Language"@en ;
-        		  rdfs:domain edpoprec:BibliographicalRecord ;
+                  rdfs:domain edpoprec:BibliographicalRecord ;
                   rdfs:range edpoprec:LanguageField .
 
 edpoprec:extent a rdf:Property ;
                 skos:prefLabel "Extent"@en ;
                 skos:description "Number of pages or other way of measuring length" ;
-        		rdfs:domain edpoprec:BibliographicalRecord ;
-        		rdfs:range edpoprec:Field .
+                rdfs:domain edpoprec:BibliographicalRecord ;
+                rdfs:range edpoprec:Field .
 
 edpoprec:size a rdf:Property ;
               skos:prefLabel "Dimensions"@en ;
               skos:description "Length in centimeters or other way of measuring size" ;
-        	  rdfs:domain edpoprec:BibliographicalRecord ;
-           	  rdfs:range edpoprec:Field .
+              rdfs:domain edpoprec:BibliographicalRecord ;
+              rdfs:range edpoprec:Field .
 
 edpoprec:physicalDescription a rdf:Property ;
                              skos:prefLabel "Physical description"@en ;
@@ -266,7 +266,7 @@ edpoprec:timespan a rdf:Property ;
                   skos:description "The years that the person was alive or the entity was existing" ;
                   rdfs:domain edpoprec:BiographicalRecord ;
                   rdfs:range edpoprec:DatingField .
-          
+
 edpoprec:activity a rdf:Property ;
                   skos:prefLabel "Activity"@en ;
                   skos:description "An activity that the entity is known for" ;
