@@ -185,12 +185,6 @@ edpoprec:title a rdf:property ;
                rdfs:domain edpoprec:BibliographicalRecord ;
                rdfs:range edpoprec:Field .
 
-edpoprec:bibliographicalRecord rdfs:subClassOf [
-    a owl:Restriction ;
-    owl:onProperty edpoprec:title ;
-    owl:maxCardinality 1
-] .
-
 edpoprec:alternativeTitle a rdf:property ;
                             skos:prefLabel "Alternative title"@en ;
                             rdfs:domain edpoprec:BibliographicalRecord ;
