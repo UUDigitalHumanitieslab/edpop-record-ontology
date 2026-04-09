@@ -234,6 +234,12 @@ edpoprec:physicalDescription a rdf:Property ;
                              rdfs:domain edpoprec:BibliographicalRecord ;
                              rdfs:range edpoprec:Field .
 
+edpoprec:annotations a rdf:Property ;
+                       skos:prefLabel "Annotations"@en ;
+                       skos:description "Annotations that were made on the described item" ;
+                       rdfs:domain edpoprec:BibliographicalRecord ;
+                       rdfs:range edpoprec:Field .
+
 ### FIELDS SPECIFIC FOR BIOGRAPHICAL RECORDS
 
 edpoprec:name a rdf:Property ;
