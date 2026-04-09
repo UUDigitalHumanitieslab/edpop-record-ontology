@@ -242,7 +242,7 @@ edpoprec:name a rdf:property ;
               rdfs:range edpoprec:Field .
 
 edpoprec:variantName a rdf:property ;
-              skos:prefLabel "Name"@en ;
+              skos:prefLabel "Variant name"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:Field .
 
