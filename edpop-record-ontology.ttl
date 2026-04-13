@@ -92,7 +92,7 @@ edpoprec:Field a rdf:Class ;
 # As we require this to be a string literal, there may be cases where the 
 # string has to be slightly adapted first (such as in case of a title field, where 
 # the original database has the title split out in title and subtitle).
-edpoprec:originalText a rdf:property ;
+edpoprec:originalText a rdf:Property ;
                       skos:prefLabel "Original text"@en ;
                       rdfs:domain edpoprec:Field ;
                       rdfs:range xsd:string .
@@ -108,14 +108,14 @@ edpoprec:Field rdfs:subClassOf [
 # In most cases the normalization will be more complex than just a string, but 
 # normalizedText provides a fallback if a simple way of rendering is needed in 
 # a user interface. normalizedText is optional.
-edpoprec:normalizedText a rdf:property ;
+edpoprec:normalizedText a rdf:Property ;
                         skos:prefLabel "Normalized text"@en ;
                         rdfs:domain edpoprec:Field ;
                         rdfs:range xsd:string .
 
 # unknown: true if the record explicitly mentions that this information is 
 # not known
-edpoprec:unknown a rdf:property ;
+edpoprec:unknown a rdf:Property ;
                    skos:prefLabel "Unknown"@en ;
                    rdfs:domain edpoprec:Field ;
                    rdfs:range xsd:boolean .
@@ -168,7 +168,7 @@ edpoprec:LocationField rdfs:subClassOf edpoprec:Field ;
                       skos:prefLabel "Location field"@en ;
                       skos:description "A location, such as a town, country or region" .
 
-edpoprec:LocationType a rdf:class ;
+edpoprec:LocationType a rdfs:Class ;
                       skos:prefLabel "Location type"@en .
 
 edpoprec:locality a edpoprec:LocationType ;
