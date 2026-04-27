@@ -72,8 +72,8 @@ edpoprec:publicURL a rdf:Property ;
 # rudimentally converted into JSON, so that it will be possible to show this data in the VRE.
 edpoprec:originalData a rdf:Property ;
                       skos:prefLabel "Original data"@en ;
-		              skos:description "All data from the original catalogue record in JSON format" ;
-		              rdfs:domain edpoprec:Record ;
+                      skos:description "All data from the original catalogue record in JSON format" ;
+                      rdfs:domain edpoprec:Record ;
                       rdfs:range rdf:JSON .
 
 
@@ -84,7 +84,7 @@ edpoprec:originalData a rdf:Property ;
 # also a normalized version as a string literal.
 # EDPOP VRE note: Fields are supposed to be able to be annotated in the EDPOP VRE.
 
-edpoprec:Field a rdf:Class ;
+edpoprec:Field a rdfs:Class ;
                skos:prefLabel "Field"@en ;
                skos:description "A catalog field" .
 
@@ -92,7 +92,7 @@ edpoprec:Field a rdf:Class ;
 # As we require this to be a string literal, there may be cases where the 
 # string has to be slightly adapted first (such as in case of a title field, where 
 # the original database has the title split out in title and subtitle).
-edpoprec:originalText a rdf:property ;
+edpoprec:originalText a rdf:Property ;
                       skos:prefLabel "Original text"@en ;
                       rdfs:domain edpoprec:Field ;
                       rdfs:range xsd:string .
@@ -108,21 +108,21 @@ edpoprec:Field rdfs:subClassOf [
 # In most cases the normalization will be more complex than just a string, but 
 # normalizedText provides a fallback if a simple way of rendering is needed in 
 # a user interface. normalizedText is optional.
-edpoprec:normalizedText a rdf:property ;
+edpoprec:normalizedText a rdf:Property ;
                         skos:prefLabel "Normalized text"@en ;
                         rdfs:domain edpoprec:Field ;
                         rdfs:range xsd:string .
 
 # unknown: true if the record explicitly mentions that this information is 
 # not known
-edpoprec:unknown a rdf:property ;
+edpoprec:unknown a rdf:Property ;
                    skos:prefLabel "Unknown"@en ;
                    rdfs:domain edpoprec:Field ;
                    rdfs:range xsd:boolean .
 
 # authorityRecord: link to a record that describes the contributor, such as ISNI or a national thesaurus.
 # This information is sometimes available on the record.
-edpoprec:authorityRecord a rdf:property ;
+edpoprec:authorityRecord a rdf:Property ;
                          skos:prefLabel "Authority record"@en ;
                          skos:description "Link to an authority record as given in the record" ;
                          rdfs:domain edpoprec:Field .
@@ -141,7 +141,7 @@ edpoprec:ContributorField rdfs:subClassOf edpoprec:Field ;
 
 # relation: should be one of the LoC relators or compatible. We may want to 
 # add another property with the original, non-normalized data.
-edpoprec:relation a rdf:property ;
+edpoprec:relation a rdf:Property ;
                   skos:prefLabel "Relation"@en ;
                   skos:description "Role of the contributor (normalized)" ;
                   rdfs:domain edpoprec:ContributorField .
@@ -149,7 +149,7 @@ edpoprec:relation a rdf:property ;
 edpoprec:DatingField rdfs:subClassOf edpoprec:Field ;
                      skos:prefLabel "Dating field"@en .
 
-edpoprec:edtfDate a rdf:property ;
+edpoprec:edtfDate a rdf:Property ;
                     skos:prefLabel "EDTF date"@en ;
                     skos:description "Normalized date in Extended Date/Time Format" ;
                     rdfs:domain edpoprec:DatingField ;
@@ -158,7 +158,7 @@ edpoprec:edtfDate a rdf:property ;
 edpoprec:LanguageField rdfs:subClassOf edpoprec:Field ;
                        skos:prefLabel "Language"@en .
 
-edpoprec:languageCode a rdf:property ;
+edpoprec:languageCode a rdf:Property ;
                         skos:prefLabel "Language code"@en ;
                         skos:description "Three-character language code according to ISO 639-3" ;
                         rdfs:domain edpoprec:LanguageField ;
@@ -168,7 +168,7 @@ edpoprec:LocationField rdfs:subClassOf edpoprec:Field ;
                       skos:prefLabel "Location field"@en ;
                       skos:description "A location, such as a town, country or region" .
 
-edpoprec:LocationType a rdf:class ;
+edpoprec:LocationType a rdfs:Class ;
                       skos:prefLabel "Location type"@en .
 
 edpoprec:locality a edpoprec:LocationType ;
@@ -180,100 +180,100 @@ edpoprec:country a edpoprec:LocationType ;
 
 ### FIELDS SPECIFIC FOR BIBLIOGRAPHICAL RECORDS
 
-edpoprec:title a rdf:property ;
+edpoprec:title a rdf:Property ;
                skos:prefLabel "Title"@en ;
                rdfs:domain edpoprec:BibliographicalRecord ;
                rdfs:range edpoprec:Field .
 
-edpoprec:bibliographicalRecord rdfs:subClassOf [
-    a owl:Restriction ;
-    owl:onProperty edpoprec:title ;
-    owl:maxCardinality 1
-] .
-
-edpoprec:alternativeTitle a rdf:property ;
+edpoprec:alternativeTitle a rdf:Property ;
                             skos:prefLabel "Alternative title"@en ;
                             rdfs:domain edpoprec:BibliographicalRecord ;
                             rdfs:range edpoprec:Field .
 
-edpoprec:contributor a rdf:property ;
+edpoprec:contributor a rdf:Property ;
                      skos:prefLabel "Contributor"@en ;
                      skos:description "Author or other contributor to the work" ;
                      rdfs:domain edpoprec:BibliographicalRecord ;
                      rdfs:range edpoprec:ContributorField .
 
-edpoprec:publisherOrPrinter a rdf:property ;
+edpoprec:publisherOrPrinter a rdf:Property ;
                             skos:prefLabel "Publisher or printer"@en ;
-			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range edpoprec:LocationField .
+                            rdfs:domain edpoprec:BibliographicalRecord ;
+                            rdfs:range edpoprec:LocationField .
 
-edpoprec:placeOfPublication a rdf:property ;
+edpoprec:placeOfPublication a rdf:Property ;
                             skos:prefLabel "Place of publication"@en ;
-			                rdfs:domain edpoprec:BibliographicalRecord ;
-			                rdfs:range edpoprec:LocationField .
+                            rdfs:domain edpoprec:BibliographicalRecord ;
+                            rdfs:range edpoprec:LocationField .
 
-edpoprec:dating a rdf:property ;
+edpoprec:dating a rdf:Property ;
                 skos:prefLabel "Dating"@en ;
-		        rdfs:domain edpoprec:BibliographicalRecord ;
-		        rdfs:range edpoprec:DatingField .
+                rdfs:domain edpoprec:BibliographicalRecord ;
+                rdfs:range edpoprec:DatingField .
 
-edpoprec:language a rdf:property ;
+edpoprec:language a rdf:Property ;
                   skos:prefLabel "Language"@en ;
-        		  rdfs:domain edpoprec:BibliographicalRecord ;
+                  rdfs:domain edpoprec:BibliographicalRecord ;
                   rdfs:range edpoprec:LanguageField .
 
-edpoprec:extent a rdf:property ;
+edpoprec:extent a rdf:Property ;
                 skos:prefLabel "Extent"@en ;
                 skos:description "Number of pages or other way of measuring length" ;
-        		rdfs:domain edpoprec:BibliographicalRecord ;
-        		rdfs:range edpoprec:Field .
+                rdfs:domain edpoprec:BibliographicalRecord ;
+                rdfs:range edpoprec:Field .
 
-edpoprec:size a rdf:property ;
+edpoprec:size a rdf:Property ;
               skos:prefLabel "Dimensions"@en ;
               skos:description "Length in centimeters or other way of measuring size" ;
-        	  rdfs:domain edpoprec:BibliographicalRecord ;
-           	  rdfs:range edpoprec:Field .
+              rdfs:domain edpoprec:BibliographicalRecord ;
+              rdfs:range edpoprec:Field .
 
-edpoprec:physicalDescription a rdf:property ;
+edpoprec:physicalDescription a rdf:Property ;
                              skos:prefLabel "Physical description"@en ;
                              skos:description "Comments about the physical appearance of the described item" ;
                              rdfs:domain edpoprec:BibliographicalRecord ;
                              rdfs:range edpoprec:Field .
 
+edpoprec:annotations a rdf:Property ;
+                       skos:prefLabel "Annotations"@en ;
+                       skos:description "Annotations that were made on the described item" ;
+                       rdfs:domain edpoprec:BibliographicalRecord ;
+                       rdfs:range edpoprec:Field .
+
 ### FIELDS SPECIFIC FOR BIOGRAPHICAL RECORDS
 
-edpoprec:name a rdf:property ;
+edpoprec:name a rdf:Property ;
               skos:prefLabel "Name"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:Field .
 
-edpoprec:variantName a rdf:property ;
-              skos:prefLabel "Name"@en ;
+edpoprec:variantName a rdf:Property ;
+              skos:prefLabel "Variant name"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:Field .
 
-edpoprec:placeOfBirth a rdf:property ;
+edpoprec:placeOfBirth a rdf:Property ;
               skos:prefLabel "Place of birth"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:LocationField .
 
-edpoprec:placeOfDeath a rdf:property ;
+edpoprec:placeOfDeath a rdf:Property ;
               skos:prefLabel "Place of death"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:LocationField .
 
-edpoprec:placeOfActivity a rdf:property ;
+edpoprec:placeOfActivity a rdf:Property ;
               skos:prefLabel "Place of activity"@en ;
               rdfs:domain edpoprec:BiographicalRecord ;
               rdfs:range edpoprec:LocationField .
 
-edpoprec:timespan a rdf:property ;
+edpoprec:timespan a rdf:Property ;
                   skos:prefLabel "Timespan"@en ;
                   skos:description "The years that the person was alive or the entity was existing" ;
                   rdfs:domain edpoprec:BiographicalRecord ;
                   rdfs:range edpoprec:DatingField .
-          
-edpoprec:activity a rdf:property ;
+
+edpoprec:activity a rdf:Property ;
                   skos:prefLabel "Activity"@en ;
                   skos:description "An activity that the entity is known for" ;
                   rdfs:domain edpoprec:BiographicalRecord ;
